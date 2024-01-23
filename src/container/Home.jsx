@@ -33,10 +33,10 @@ const Home = () => {
             <img className="w-100" src={logo} alt="logo" />
           </Link>
           {/* start coding button */}
-          <div className="mt-4 mb-1">
+          <div className="mt-4 mb-1 border border-light rounded border-opacity-75 px-4 py-1">
             <Link
               to={"/newProject"}
-              className="px-4 py-1 bg-dark text-white text-opacity-75 border border-light rounded border-opacity-75 text-decoration-none"
+              className=" bg-dark text-white text-opacity-75 text-decoration-none"
             >
               start coding
             </Link>
