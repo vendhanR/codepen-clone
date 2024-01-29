@@ -4,18 +4,28 @@ import { Home } from './container'
 import { auth, db } from './config/firebase.config'
 import { doc, setDoc } from 'firebase/firestore';
 import { Spinner } from './component'
+import { useDispatch } from 'react-redux';
+import { setUser } from './store/slices/userSlice';
+import NewProject from './component/NewProject';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
+  const dispatch = useDispatch();
   useEffect(() => {
     // get auth information, onAuthStateChanged -> automatically driger once google ,github,email&pass auth created 
     const unsubscribe = auth.onAuthStateChanged(userCred => {
       if (userCred) {
         console.log(userCred?.providerData[0]);
-        setDoc(doc(db, "users", userCred?.uid), userCred?.providerData[0]);
+        // every time refresing or reloding it will not create  or override new record unless the id is already inside the document  
+        setDoc(doc(db, "users", userCred?.uid), userCred?.providerData[0]).then(() => {
+          dispatch(setUser(userCred?.providerData[0]))
+          navigate('/home/projects', { replace: true })
+        }
+
+        )
       } else {
-        navigate('/name/auth', { replace: true })
+        navigate('/home/auth', { replace: true })
       }
       setTimeout(() => {
         setIsLoading(false);
@@ -32,6 +42,7 @@ const App = () => {
       : <div className='vh-100 w-100 d-flex justify-content-start align-items-start  overflow-hidden'>
         <Routes>
           <Route path='/home/*' element={<Home />} />
+          <Route path='/newProject' element={<NewProject />} />
           <Route path='*' element={<Navigate to={'/home'} />} />
         </Routes>
       </div>

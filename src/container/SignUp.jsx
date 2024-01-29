@@ -3,7 +3,7 @@ import { logo } from "../asset";
 import { UserAuthInput } from "../component";
 import { MdEmail, MdOpacity } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { SiGithub } from "react-icons/si";
 import { signInWithGoogle, signInWithGithub } from "../utils/helpers";
@@ -62,7 +62,7 @@ const SignUp = () => {
         alt="logo"
       />
 
-      <div className="w-100 d-flex align-items-center justify-align-content-center flex-column  py-3">
+      <div className="w-100 d-flex align-items-center justify-align-content-center flex-column py-3">
         <p className="text-white opacity-50 py-2">Join With Us! 😊</p>
         <div className="rounded  bg-dark  flex-column align-content-center justify-content-center px-4 py-4">
           {/* email */}
@@ -109,13 +109,13 @@ const SignUp = () => {
           {/* account text section */}
           {!isLogin && (
             <p
-              className="text-light opacity-75 w-100 d-flex justify-content-center align-content-center"
-              style={{ fontSize: "0.9rem" }}
+              className="text-light opacity-75 py-3 w-100 d-flex justify-content-center align-content-center"
+              style={{ fontSize: "0.8rem" }}
             >
               Already have an account!
               <span
                 onClick={() => setisLogin(!isLogin)}
-                className="text-success text-decoration-underline"
+                className="text-success text-decoration-underline px-2"
                 style={{ cursor: "pointer" }}
               >
                 Login
@@ -124,13 +124,13 @@ const SignUp = () => {
           )}
           {isLogin && (
             <p
-              className="text-light opacity-75 w-100 d-flex justify-content-center align-content-center"
-              style={{ fontSize: "0.9rem" }}
+              className="text-light opacity-75 py-3 w-100 d-flex justify-content-center align-content-center"
+              style={{ fontSize: "0.8rem" }}
             >
               Doesn't have an account!
               <span
                 onClick={() => setisLogin(!isLogin)}
-                className="text-success text-decoration-underline"
+                className="text-success text-decoration-underline px-2"
                 style={{ cursor: "pointer" }}
               >
                 create here

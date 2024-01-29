@@ -5,11 +5,13 @@ import { logo } from "../asset";
 import { IoMdHome } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import {Projects,SignUp} from '../container'
+import { useSelector } from "react-redux";
+import UserProfileDetails from "../component/UserProfileDetails";
 
 const Home = () => {
   const [isSideMenu, setSideMenu] = useState(false);
-  const [user, setUser] = useState(null);
-
+  const user = useSelector(state => state.user.user);
+  console.log(user)
   return (
     <>
       <div
@@ -71,16 +73,16 @@ const Home = () => {
           </div>
           {/* profile section */}
           {!user && (
-            <div className="bg-success p-2 rounded ">
               <Link
                 to={"/home/auth"}
-                className="text-white opacity-75 text-decoration-none"
+                className="text-white opacity-75 text-decoration-none bg-success p-2 rounded"
               >
                 SignUp
               </Link>
-            </div>
           )}
-          {user && <div></div>}
+          {user && <div>
+            <UserProfileDetails/>
+            </div>}
         </div>
         {/* bottom section  */}
         <Routes>
