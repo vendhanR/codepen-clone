@@ -32,8 +32,8 @@ body{
 }
 
 .Resizer.horizontal:hover {
-  border-top: 5px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 5px solid rgba(255, 255, 255, 0.5);
+  border-top: 5px solid rgba(255, 255, 255, 0.8);
+  border-bottom: 5px solid rgba(252, 252, 252,0.5);
 }
 
 .Resizer.vertical {
@@ -92,7 +92,7 @@ body{
 }
 
 .SplitPane.horizontal {
-  top: 0px !important;
+  top: 100px !important;
 }
 
 .ͼo {
