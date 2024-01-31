@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { Home } from './container'
 import { auth, db } from './config/firebase.config'
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 import { Spinner } from './component'
 import { useDispatch } from 'react-redux';
 import { setUser } from './store/slices/userSlice';
-import {NewProject} from './component';
+import { NewProject } from './component';
+import { setProjects } from './store/slices/projectSlice';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -33,6 +34,21 @@ const App = () => {
     })
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const projectQuery = query(
+      collection(db, 'Projects'),
+      orderBy('id', 'desc')
+    )
+
+    const unsubscribe = onSnapshot(projectQuery, (querySanps) => {
+      const projectList = querySanps.docs.map(doc => doc.data());
+      dispatch(setProjects(projectList))
+      
+    })
+
+    return unsubscribe;
+  }, [])
 
   return (
     isLoading ?

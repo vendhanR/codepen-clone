@@ -60,7 +60,7 @@ const Home = () => {
       {/* right side section */}
       <div className="d-flex  min-vh-100 overflow-overflow-y-auto h-100 flex-column align-content-start justify-content-start px-4 py-4 flex-grow-1">
         {/* top section */}
-        <div className="w-100 d-flex  align-items-center justify-content-between gap-3">
+        <div className="w-100 d-flex mb-3 align-items-center justify-content-between gap-3">
           {/* search */}
           <div className="w-100 d-flex align-items-center justify-content-between  bg-dark px-2 py-2 rounded">
             <FaSearch className="text-white  opacity-75" />
