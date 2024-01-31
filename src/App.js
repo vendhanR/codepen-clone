@@ -6,7 +6,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Spinner } from './component'
 import { useDispatch } from 'react-redux';
 import { setUser } from './store/slices/userSlice';
-import NewProject from './component/NewProject';
+import {NewProject} from './component';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
