@@ -5,13 +5,18 @@ import { logo } from "../asset";
 import { IoMdHome } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import {Projects,SignUp} from '../container'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserProfileDetails from "../component/UserProfileDetails";
+import { setSearchTerm } from "../store/slices/searchSlice";
 
 const Home = () => {
   const [isSideMenu, setSideMenu] = useState(false);
   const user = useSelector(state => state.user.user);
-  console.log(user)
+  const searchTerm = useSelector((state) => state.searchTerm?.searchTerm);
+
+  const dispatch = useDispatch();
+
+
   return (
     <>
       <div
@@ -68,6 +73,8 @@ const Home = () => {
               className="bg-transparent flex-grow-1 px-4 py-1 border-0 text-white w-100 opacity-75"
               placeholder="Search here..."
               style={{ outline: "none" }}
+              value={searchTerm}
+              onChange={(e)=>dispatch(setSearchTerm(e.target.value))}
             />
           </div>
           {/* profile section */}

@@ -44,7 +44,7 @@ const App = () => {
     const unsubscribe = onSnapshot(projectQuery, (querySanps) => {
       const projectList = querySanps.docs.map(doc => doc.data());
       dispatch(setProjects(projectList))
-      
+
     })
 
     return unsubscribe;
