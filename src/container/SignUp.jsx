@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { logo } from "../asset";
 import { UserAuthInput } from "../component";
-import { MdEmail, MdOpacity } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
@@ -17,7 +16,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [getEmailValidation, setGetEmailValidation] = useState(false);
-  const [isLogin, setisLogin] = useState(false);
+  const [isLogin, setisLogin] = useState(true);
   const [alert, setAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
@@ -40,7 +39,7 @@ const SignUp = () => {
       await signInWithEmailAndPassword(auth, email, password)
         .then((userCred) => {
           if (userCred) {
-            console.log(userCred);
+            console.log(userCred.user);
           }
         })
         .catch((err) => {
@@ -54,16 +53,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="w-100 py-2">
-      <img
-        className="opacity-50 h-auto"
-        style={{ width: "6rem" }}
-        src={logo}
-        alt="logo"
-      />
-
-      <div className="w-100 d-flex align-items-center justify-align-content-center flex-column py-3">
-        <p className="text-white opacity-50 py-2">Join With Us! 😊</p>
+    <div className="w-100 py-2 d-flex">
+      <div className="w-100 d-flex align-items-center justify-content-center flex-column ">
+        <p className="text-white opacity-50 ">Join With Us! 😊</p>
         <div className="rounded  bg-dark  flex-column align-content-center justify-content-center px-4 py-4">
           {/* email */}
           <UserAuthInput
@@ -84,7 +76,11 @@ const SignUp = () => {
             setStateFunction={setPassword}
           />
           {/* aler section */}
-          {alert && <p className="text-danger d-flex justify-content-center">{alertMsg}</p>}
+          {alert && (
+            <p className="text-danger d-flex justify-content-center">
+              {alertMsg}
+            </p>
+          )}
 
           {/* login buttion  */}
           {!isLogin && (
@@ -145,6 +141,8 @@ const SignUp = () => {
           </div>
 
           {/* google section */}
+          <div>
+
           <motion.button
             onClick={signInWithGoogle}
             whileTap={{ scale: 0.9 }}
@@ -153,6 +151,7 @@ const SignUp = () => {
             <FcGoogle className="" />{" "}
             <span className="opacity-75">Sign in with Google</span>
           </motion.button>
+          </div>
           {/* or section */}
           <div className="d-flex w-100 text-white justify-content-center align-items-center opacity-25 pb-2">
             <div className="border border-bottom border-white w-25"></div>
@@ -161,6 +160,7 @@ const SignUp = () => {
           </div>
 
           {/* github */}
+          <div>
 
           <motion.button
             onClick={signInWithGithub}
@@ -170,6 +170,7 @@ const SignUp = () => {
             <SiGithub />
             <span className="opacity-75">Sign in with GitHub</span>
           </motion.button>
+          </div>
         </div>
       </div>
     </div>

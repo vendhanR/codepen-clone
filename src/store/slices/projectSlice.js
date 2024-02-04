@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState ={
-    projects:''
+    projects:[],
+    openProject : {}
 }
 
 const projectSlice = createSlice({
@@ -9,14 +10,17 @@ const projectSlice = createSlice({
     initialState,
     reducers : {
         setProjects : (state,action)=>{
-            console.log(action.payload)
             state.projects = action.payload
         },
         setProjectsNull : (state,action)=>{
             state.projects = ''
+        },
+        openExistingProject : (state, action) => {
+            state.openProject = action.payload
+            
         }
     }
 })
 
-export const {setProjects,setProjectsNull } = projectSlice.actions
+export const {setProjects,setProjectsNull,openExistingProject } = projectSlice.actions
 export default projectSlice.reducer;

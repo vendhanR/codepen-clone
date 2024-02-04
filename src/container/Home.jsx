@@ -8,6 +8,7 @@ import {Projects,SignUp} from '../container'
 import { useDispatch, useSelector } from "react-redux";
 import UserProfileDetails from "../component/UserProfileDetails";
 import { setSearchTerm } from "../store/slices/searchSlice";
+import { openExistingProject } from "../store/slices/projectSlice";
 
 const Home = () => {
   const [isSideMenu, setSideMenu] = useState(false);
@@ -41,8 +42,9 @@ const Home = () => {
           </Link>
           {/* start coding button */}
             <Link to={"/newProject"}
+            onClick={() => dispatch(openExistingProject(null))}
               className=" bg-dark text-white text-opacity-75 text-decoration-none">
-          <div className="mt-4 mb-1 border border-light rounded border-opacity-75 px-4 py-1">
+          <div  className="mt-4 mb-1 border border-light rounded border-opacity-75 px-4 py-1">
               
               start coding
           </div>
@@ -62,9 +64,9 @@ const Home = () => {
         </div>
       </div>
       {/* right side section */}
-      <div className="d-flex  min-vh-100 overflow-overflow-y-auto h-100 flex-column align-content-start justify-content-start px-4 py-4 flex-grow-1">
+      <div className="d-flex  min-vh-100 overflow-overflow-y-auto h-100 flex-column align-content-start justify-content-start px-4 pt-3 flex-grow-1">
         {/* top section */}
-        <div className="w-100 d-flex mb-3 align-items-center justify-content-between gap-3">
+        <div className="w-100 d-flex mb-2 align-items-center justify-content-between gap-3">
           {/* search */}
           <div className="w-100 d-flex align-items-center justify-content-between  bg-dark px-2 py-2 rounded">
             <FaSearch className="text-white  opacity-75" />

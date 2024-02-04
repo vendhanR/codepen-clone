@@ -7,18 +7,23 @@ import { Link } from "react-router-dom";
 const UserProfileDetails = () => {
   const user = useSelector((state) => state.user.user);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  console.log(user);
   return (
     <div className="d-flex justify-content-center align-items-center  gap-2 position-relative ">
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsMenuVisible(!isMenuVisible)}
-        className="d-flex justify-content-center align-items-center align-content-center rounded-circle overflow-hidden bg-secondary "
+        className="d-flex justify-content-center align-items-center align-content-center rounded-circle overflow-hidden bg-success "
         style={{ width: "3rem", height: "3rem" }}
       >
         {user?.photoURL ? (
           <>
-            <img src={user.photoURL} className="object-fit-cover w-100 h-100" />
+            <img
+              src={user?.photoURL}
+              className="object-fit-cover w-100 h-100"
+              alt="profile"
+            />
           </>
         ) : (
           <>
