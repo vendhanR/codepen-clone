@@ -17,6 +17,7 @@ import { db } from "../config/firebase.config";
 import Alert from "./Alert";
 
 import { BiLogoFirebase } from "react-icons/bi";
+import CodingSection from "./CodingSection";
 
 const NewProject = () => {
   const [html, setHtml] = useState("");
@@ -28,6 +29,8 @@ const NewProject = () => {
   const [isTitle, setIsTitle] = useState(false);
 
   const [alert, setAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("success");
+  const [alertMsg, setAlertMsg] = useState("Project added...");
 
   const user = useSelector((state) => state.user?.user);
   const openProject = useSelector((state) => state.projects?.openProject);
@@ -36,37 +39,46 @@ const NewProject = () => {
     getOutput();
   }, [html, css, js]);
 
-  const saveProgram = async () => {
-    const id = `${Date.now()}`;
-    const _doc = {
-      id: id,
-      title: title,
-      html: html,
-      css: css,
-      js: js,
-      output: output,
-      user: user,
-    };
-    
-    await setDoc(doc(db, "Projects", id), _doc)
-      .then(() => {
-        setAlert(true);
-        setTimeout(() => {
-          setAlert(false);
-        }, 2000);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  // console.log(openProject.html);
-  useEffect(()=>{
-    if(openProject){
+  useEffect(() => {
+    if (openProject) {
       setHtml(openProject.html);
       setCss(openProject.css);
-      setJs(openProject.js)
-      setTitle(openProject.title)
+      setJs(openProject.js);
+      setTitle(openProject.title);
     }
-  },[])
+  }, []);
+
+  const saveProgram = async () => {
+    if (!user) {
+      setAlert(true);
+      setAlertStatus("warning");
+      setAlertMsg("To save, please log in first...");
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
+    } else {
+      const id = `${Date.now()}`;
+      const _doc = {
+        id: id,
+        title: title,
+        html: html,
+        css: css,
+        js: js,
+        output: output,
+        user: user,
+      };
+      setAlert(true);
+      await setDoc(doc(db, "Projects", id), _doc)
+        .then(() => {
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 2000);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   const getOutput = () => {
     const htmlDocumentTemplate = `
@@ -93,7 +105,7 @@ const NewProject = () => {
         {/* alert sectoin */}
         {alert && (
           <AnimatePresence>
-            <Alert status="success" alerMsg="Project added..." />
+            <Alert status={alertStatus} alerMsg={alertMsg} />
           </AnimatePresence>
         )}
 
@@ -175,30 +187,38 @@ const NewProject = () => {
                     ? user?.displayName
                     : `${user?.email.split("@")[0]}`}
                 </p>
-                {/* <motion.p
-                  whileTap={{ scale: 0.9 }}
-                  className="bg-success px-2 rounded text-white font-monospace"
-                  style={{ cursor: "pointer" }}
-                >
-                  + follow
-                </motion.p> */}
+                {openProject && (
+                  <motion.p
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-success px-2 rounded text-white font-monospace"
+                    style={{ cursor: "pointer" }}
+                  >
+                    + follow
+                  </motion.p>
+                )}
               </div>
             </div>
           </div>
           {/*User profile */}
-          {user && (
-            <div className="d-flex gap-2 ">
-              <motion.button
-                onClick={saveProgram}
-                whileTap={{ scale: 0.9 }}
-                className="btn btn-secondary"
+          <div className="d-flex gap-2 ">
+            <motion.button
+              onClick={saveProgram}
+              whileTap={{ scale: 0.9 }}
+              className="btn btn-secondary"
+            >
+              <BiLogoFirebase />
+              save
+            </motion.button>
+            {!user && (
+              <Link
+                to={"/home/auth"}
+                className="text-white text-decoration-none bg-success p-2 rounded"
               >
-                <BiLogoFirebase />
-                save
-              </motion.button>
-              <UserProfileDetails />
-            </div>
-          )}
+                login
+              </Link>
+            )}
+            {user && <UserProfileDetails />}
+          </div>
         </header>
 
         {/* codeing section */}
@@ -211,35 +231,14 @@ const NewProject = () => {
             defaultSize={"50%"}
           >
             {/* top coding secton  */}
-            <SplitPane split="vertical" minSize={1} defaultSize={"34%"}>
+            <SplitPane split="vertical" minSize={1} defaultSize={"34%"} >
               {/* html code  */}
-              <div className="w-100 h-100 d-flex flex-column align-items-start justify-content-start">
-                {/* icons */}
-                <div className="d-flex  w-100 justify-content-between align-items-center ">
-                  <div className="d-flex bg-dark gap-2 justify-content-center border-top px-2 py-1 align-items-center ">
-                    <FaHtml5 className="text-danger" />
-                    <span className="text-light">HTML</span>
-                  </div>
-                  <div className="d-flex  gap-2 justify-content-center  px-2 py-1 align-items-center">
-                    <FcSettings style={{ cursor: "pointer" }} />
-                    <FaChevronDown
-                      className="text-white"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </div>
-                </div>
-                {/* html code mirror */}
-                <div className="w-100 overflow-auto">
-                  <CodeMirror
-                    value={html}
-                    height="1000px"
-                    theme={"dark"}
-                    extensions={[javascript({ jsx: true })]}
-                    onChange={(val, viewUpdate) => setHtml(val)}
-                  />
-                </div>
-              </div>
-
+              <CodingSection
+                title={"HTML"}
+                code={html}
+                setStateFunction={setHtml}
+                Icon={FaHtml5}
+              />
               <SplitPane
                 split="vertical"
                 minSize={1}
@@ -247,62 +246,19 @@ const NewProject = () => {
                 maxSize={"100%"}
               >
                 {/* css code */}
-                <div className="w-100 h-100 d-flex flex-column align-items-start justify-content-start">
-                  {/* icons */}
-                  <div className="d-flex  w-100 justify-content-between align-items-center ">
-                    <div className="d-flex bg-dark gap-2 justify-content-center border-top px-2 py-1 align-items-center ">
-                      <FaCss3 className="text-info" />
-                      <span className="text-light">CSS</span>
-                    </div>
-                    <div className="d-flex  gap-2 justify-content-center  px-2 py-1 align-items-center">
-                      <FcSettings style={{ cursor: "pointer" }} />
-                      <FaChevronDown
-                        className="text-white"
-                        style={{ cursor: "pointer" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/*css code mirror */}
-                  <div className="w-100 overflow-scroll">
-                    <CodeMirror
-                      value={css}
-                      height="1000px"
-                      theme={"dark"}
-                      extensions={[javascript({ jsx: true })]}
-                      onChange={(val, viewUpdate) => setCss(val)}
-                    />
-                  </div>
-                </div>
-
+                <CodingSection
+                  title={"CSS"}
+                  code={css}
+                  setStateFunction={setCss}
+                  Icon={FaCss3}
+                />
                 {/* js code */}
-                <div className="w-100 h-100 d-flex flex-column align-items-start justify-content-start">
-                  {/* icons */}
-                  <div className="d-flex  w-100 justify-content-between align-items-center ">
-                    <div className="d-flex bg-dark gap-2 justify-content-center border-top px-2 py-1 align-items-center ">
-                      <FaJs className="text-warning" />
-                      <span className="text-light">JS</span>
-                    </div>
-                    <div className="d-flex  gap-2 justify-content-center  px-2 py-1 align-items-center">
-                      <FcSettings style={{ cursor: "pointer" }} />
-                      <FaChevronDown
-                        className="text-white"
-                        style={{ cursor: "pointer" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/*js code mirror */}
-                  <div className="h-100 w-100 overflow-scroll">
-                    <CodeMirror
-                      value={js}
-                      height="1000px"
-                      theme={"dark"}
-                      extensions={[javascript({ jsx: true })]}
-                      onChange={(val, viewUpdate) => setJs(val)}
-                    />
-                  </div>
-                </div>
+                <CodingSection
+                  title={"JS"}
+                  code={js}
+                  setStateFunction={setJs}
+                  Icon={FaJs}
+                />
               </SplitPane>
             </SplitPane>
 

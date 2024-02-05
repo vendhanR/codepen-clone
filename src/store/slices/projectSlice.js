@@ -12,7 +12,7 @@ const projectSlice = createSlice({
         setProjects : (state,action)=>{
             state.projects = action.payload
         },
-        setProjectsNull : (state,action)=>{
+        setProjectsNull : (state)=>{
             state.projects = ''
         },
         openExistingProject : (state, action) => {

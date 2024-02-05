@@ -15,7 +15,7 @@ export const signInWithGoogle = async () => {
 
 export const signInWithGithub = async () => {
     await signInWithPopup(auth, githubProvider).then(userCred => {
-        window.location.reload()
+        window.location.reload();
     }).catch(error => {
         console.log("signInWithGithub --> ",error.message)
     })
@@ -30,7 +30,5 @@ export const signOutAction = async () => {
 }
 
 export const Menus= [
-    {id:uuidv4(),name : 'Projects', uri:'/home/projects'},
-    {id:uuidv4(),name : 'Collections', uri:'/home/collections'},
-    {id:uuidv4(),name : 'Profile', uri:'/home/profile'}
+    {id:uuidv4(),name : 'saved', uri:'/home/saved   '},
 ]

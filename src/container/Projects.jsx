@@ -25,7 +25,7 @@ const Projects = () => {
 
   return (
     <div className="w-100 d-flex gap-3 flex-wrap justify-content-center align-items-center py-3 overflow-auto">
-      {filtered ? (
+      {filtered.length > 0 ? (
         <>
           {filtered &&
             filtered.map((project, index) => (

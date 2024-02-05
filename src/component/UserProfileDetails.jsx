@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menus, signOutAction } from "../utils/helpers";
 import { Link } from "react-router-dom";
+import { VscSignOut } from "react-icons/vsc";
 
 const UserProfileDetails = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user?.user);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  console.log(user);
   return (
     <div className="d-flex justify-content-center align-items-center  gap-2 position-relative ">
       <motion.div
@@ -63,7 +63,7 @@ const UserProfileDetails = () => {
               className="text-white-50 pt-2"
               style={{ cursor: "pointer" }}
             >
-              sign out
+             <VscSignOut/> sign out 
             </motion.p>
           </motion.div>
         )}

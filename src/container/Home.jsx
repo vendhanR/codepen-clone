@@ -4,7 +4,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { logo } from "../asset";
 import { IoMdHome } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
-import {Projects,SignUp} from '../container'
+import { Projects, SignUp } from "../container";
 import { useDispatch, useSelector } from "react-redux";
 import UserProfileDetails from "../component/UserProfileDetails";
 import { setSearchTerm } from "../store/slices/searchSlice";
@@ -12,11 +12,9 @@ import { openExistingProject } from "../store/slices/projectSlice";
 
 const Home = () => {
   const [isSideMenu, setSideMenu] = useState(false);
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user?.user);
   const searchTerm = useSelector((state) => state.searchTerm?.searchTerm);
-
   const dispatch = useDispatch();
-
 
   return (
     <>
@@ -31,6 +29,7 @@ const Home = () => {
         <div
           className="position-absolute top-0 start-100 bg-dark mt-2 rounded-right "
           onClick={() => setSideMenu(!isSideMenu)}
+          style={{cursor:'pointer'}}
         >
           <MdKeyboardDoubleArrowLeft className="text-light " />
         </div>
@@ -41,14 +40,15 @@ const Home = () => {
             <img className="w-100" src={logo} alt="logo" />
           </Link>
           {/* start coding button */}
-            <Link to={"/newProject"}
+          <Link
+            to={"/newProject"}
             onClick={() => dispatch(openExistingProject(null))}
-              className=" bg-dark text-white text-opacity-75 text-decoration-none">
-          <div  className="mt-4 mb-1 border border-light rounded border-opacity-75 px-4 py-1">
-              
+            className=" bg-dark text-white text-opacity-75 text-decoration-none"
+          >
+            <div className="mt-4 mb-1 border border-light rounded border-opacity-75 px-4 py-1">
               start coding
-          </div>
-            </Link>
+            </div>
+          </Link>
           {/* home nav */}
           {user && (
             <div className="mt-4 ">
@@ -76,26 +76,25 @@ const Home = () => {
               placeholder="Search here..."
               style={{ outline: "none" }}
               value={searchTerm}
-              onChange={(e)=>dispatch(setSearchTerm(e.target.value))}
+              onChange={(e) => dispatch(setSearchTerm(e.target.value))}
             />
           </div>
           {/* profile section */}
-          {!user && (
-              <Link
-                to={"/home/auth"}
-                className="text-white opacity-75 text-decoration-none bg-success p-2 rounded"
-              >
-                SignUp
-              </Link>
+          {!user ? (
+            <Link
+              to={"/home/auth"}
+              className="text-white opacity-75 text-decoration-none bg-success p-2 rounded"
+            >
+              SignUp
+            </Link>
+          ) : (
+            <UserProfileDetails />
           )}
-          {user && <div>
-            <UserProfileDetails/>
-            </div>}
         </div>
         {/* bottom section  */}
         <Routes>
-          <Route path="/auth" element={<SignUp />}/>
-          <Route path="/*" element={<Projects />}/>
+          <Route path="/auth" element={<SignUp />} />
+          <Route path="/*" element={<Projects />} />
         </Routes>
       </div>
     </>

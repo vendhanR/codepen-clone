@@ -15,16 +15,16 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     // get auth information, onAuthStateChanged -> automatically driger once google ,github,email&pass auth created 
-    const unsubscribe = auth.onAuthStateChanged(userCred => {
+    const unsubscribeAuth = auth.onAuthStateChanged(userCred => {
       if (userCred) {
         console.log(userCred?.providerData[0]);
         // every time refresing or reloding it will not create  or override new record unless the id is already inside the document  
         setDoc(doc(db, "users", userCred?.uid), userCred?.providerData[0]).then(() => {
           dispatch(setUser(userCred?.providerData[0]))
           navigate('/home/projects', { replace: true })
-        }
-
-        )
+        }).catch(error => {
+          console.error("Error updating user document:", error)
+        })
       } else {
         navigate('/home/auth', { replace: true })
       }
@@ -32,7 +32,7 @@ const App = () => {
         setIsLoading(false);
       }, 2000);
     })
-    return () => unsubscribe();
+    return () => unsubscribeAuth();
   }, []);
 
   useEffect(() => {
@@ -41,13 +41,15 @@ const App = () => {
       orderBy('id', 'desc')
     )
 
-    const unsubscribe = onSnapshot(projectQuery, (querySanps) => {
+    const unsubscribeProjects = onSnapshot(projectQuery, (querySanps) => {
       const projectList = querySanps.docs.map(doc => doc.data());
       dispatch(setProjects(projectList))
 
+    }, error => {
+      console.error("Error fetching projects:", error);
     })
 
-    return unsubscribe;
+    return unsubscribeProjects;
   }, [])
 
   return (

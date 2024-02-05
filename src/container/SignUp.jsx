@@ -20,7 +20,7 @@ const SignUp = () => {
   const [alert, setAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
-  const createNewUser = async () => {
+  const handleSignUp  = async () => {
     if (getEmailValidation) {
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCred) => {
@@ -85,7 +85,7 @@ const SignUp = () => {
           {/* login buttion  */}
           {!isLogin && (
             <motion.div
-              onClick={createNewUser}
+              onClick={handleSignUp }
               whileTap={{ scale: 0.9 }}
               className="w-100 d-flex justify-content-center align-content-center flex-grow-1 py-2 "
             >
